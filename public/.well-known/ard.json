@@ -1,0 +1,67 @@
+{
+  "@context": "https://agenticresourcediscovery.org/context/v1",
+  "entries": [
+    {
+      "identifier": "urn:air:gnrs.gr:skill:headless-web-engineering",
+      "displayName": "GNRS — Headless Web Engineering",
+      "type": "application/agent-skills+json",
+      "url": "https://gnrs.gr/#expertise",
+      "description": "Headless architecture, React and TypeScript frontend engineering, WordPress and WooCommerce plugin development, and PHP backend work delivered by Ilias Giannaros (GNRS).",
+      "capabilities": [
+        "Headless Architecture",
+        "TypeScript & React Engineering",
+        "WordPress & WooCommerce Plugins",
+        "PHP Backend Engineering",
+        "eCommerce Systems"
+      ],
+      "representativeQueries": [
+        "who can build a headless React frontend with a WordPress backend",
+        "find a WooCommerce plugin developer in Greece",
+        "freelance TypeScript developer for a headless e-commerce build"
+      ],
+      "tags": ["headless", "react", "typescript", "wordpress", "woocommerce", "php", "ecommerce"],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-30"
+    },
+    {
+      "identifier": "urn:air:gnrs.gr:skill:mcp-and-ai-agents",
+      "displayName": "GNRS — MCP Servers & AI Agent Skills",
+      "type": "application/agent-skills+json",
+      "url": "https://gnrs.gr/#expertise",
+      "description": "Design and implementation of Model Context Protocol servers and custom AI agent skills for production tooling, built by Ilias Giannaros (GNRS).",
+      "capabilities": [
+        "MCP Server Development",
+        "Custom AI Agent Skills",
+        "AI Augmented Development"
+      ],
+      "representativeQueries": [
+        "who builds MCP servers for production tooling",
+        "find an engineer to write custom AI agent skills",
+        "consultant for Model Context Protocol integration"
+      ],
+      "tags": ["mcp", "ai-agents", "llm", "developer-tooling"],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-30"
+    },
+    {
+      "identifier": "urn:air:gnrs.gr:profile:ilias-giannaros",
+      "displayName": "Ilias Giannaros (GNRS) — Portfolio & Profile",
+      "type": "text/html",
+      "url": "https://gnrs.gr/",
+      "description": "Profile, services, selected projects and experience of Ilias Giannaros (GNRS), a full-stack developer based in Kalamaria, Thessaloniki, Greece.",
+      "capabilities": [
+        "Portfolio",
+        "Project References",
+        "Contact"
+      ],
+      "representativeQueries": [
+        "who is Ilias Giannaros",
+        "GNRS full-stack developer Thessaloniki",
+        "portfolio of a headless web developer in Greece"
+      ],
+      "tags": ["portfolio", "profile", "full-stack", "greece"],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-30"
+    }
+  ]
+}

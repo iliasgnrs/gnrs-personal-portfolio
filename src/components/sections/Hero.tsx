@@ -18,6 +18,36 @@ export default function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center justify-center px-4 pt-24">
       <div className="mx-auto max-w-4xl text-center">
+        {/* Profile picture */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto mb-8 h-28 w-28 sm:h-32 sm:w-32"
+        >
+          <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-accent-blue to-accent-cyan opacity-70 blur-md" />
+          <div className="absolute -inset-[3px] rounded-full bg-gradient-to-br from-accent-blue via-accent-cyan to-accent-blue" />
+          <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-base-900 bg-base-700">
+            <img
+              src="/portrait.webp"
+              srcSet="/portrait-256.webp 256w, /portrait.webp 800w"
+              sizes="(min-width: 640px) 128px, 112px"
+              alt="Ilias Giannaros"
+              width={800}
+              height={800}
+              // React 18 drops fetchPriority on SSR; pass the real HTML attribute.
+              {...{ fetchpriority: 'high' }}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <span
+            className="absolute bottom-1 right-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-base-900 bg-green-400"
+            aria-hidden="true"
+          >
+            <span className="h-1.5 w-1.5 animate-ping rounded-full bg-green-400" />
+          </span>
+        </motion.div>
+
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,14 +60,15 @@ export default function Hero() {
         </motion.div>
 
         {/* Name */}
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl"
         >
-          <span className="gradient-text">Ilias Giannaros</span>
-        </motion.h1>
+          <h1 className="font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl md:text-7xl">
+            <span className="gradient-text">Ilias Giannaros</span>
+          </h1>
+        </motion.div>
 
         {/* Typewriter role */}
         <motion.div
@@ -47,18 +78,16 @@ export default function Hero() {
           className="mt-4 h-8 text-lg font-medium text-gray-300 sm:text-xl md:text-2xl"
         >
           <span className="text-accent-cyan">{typed}</span>
-          <span className="ml-0.5 inline-block w-0.5 animate-pulse bg-accent-cyan align-middle" style={{ height: '1em' }} />
+          <span
+            className="ml-0.5 inline-block w-0.5 animate-pulse bg-accent-cyan align-middle"
+            style={{ height: '1em' }}
+          />
         </motion.div>
 
         {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-gray-400 sm:text-lg"
-        >
+        <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-gray-400 sm:text-lg">
           Building production web apps and custom systems, supercharging the development lifecycle with AI-driven tooling and MCP servers.
-        </motion.p>
+        </p>
 
         {/* CTAs */}
         <motion.div

@@ -1,0 +1,61 @@
+# Ilias Giannaros (GNRS)
+
+> Ilias Giannaros — known online as GNRS — is a full-stack developer based in Kalamaria,
+> Thessaloniki, Greece. He builds headless web architectures, custom WordPress and
+> WooCommerce plugins, React/TypeScript frontends, and MCP servers with AI agent skills.
+> Personal portfolio and services site: https://gnrs.gr
+
+## Identity
+
+- Name: Ilias Giannaros
+- Also known as: GNRS, Ilias GNRS
+- Role: Headless Full-Stack Developer & AI Agent Engineer
+- Location: Kalamaria, Thessaloniki, Greece
+- Email: ilias@gnrs.gr
+- LinkedIn: https://gr.linkedin.com/in/iliasgnrs
+- GitHub: https://github.com/iliasgnrs
+- Languages: Greek, English
+
+## Services
+
+- Headless and SaaS web application development
+- WordPress and WooCommerce plugin engineering
+- React and TypeScript frontend engineering
+- MCP server development and custom AI agent skills
+- E-commerce systems and PWA booking platforms
+
+## Core expertise
+
+Headless Architecture, TypeScript & React Engineering, WordPress & WooCommerce Plugins,
+PHP Backend Engineering, MCP Server Development, Custom AI Agent Skills, eCommerce Systems,
+PWA & Booking Systems.
+
+## Selected projects
+
+- [Theros](https://therosapp.eu): Accommodation management SaaS.
+- [Buddystat](https://buddystat.com): Privacy-first web analytics SaaS.
+- [Atractos](https://atractos.com): Engineering hub SaaS.
+- [Adapedu](https://adapedu.com): Education SaaS platform.
+- [Menuvi](https://menuvi.app): Hospitality menu platform.
+- [Agrivate](https://agrivate.eu): IoT smart agriculture platform.
+- [Scalepath](https://scalepath.ee): European technology venture hub.
+
+## Experience
+
+- Full-Stack Developer / Owner, Uphostt — cloud hosting platforms and headless architectures
+- Founder & Engineer, Agrivate — IoT smart agriculture hardware and software
+- STEM Instructor, Anatolia College (2022–present) — robotics, programming, FIRST LEGO League mentoring
+- Owner, Scalepath.ee — SaaS, IoT and bespoke web development
+- Team Mentor & Regional Co-Host, FIRST LEGO League Greece (2017–2024)
+- Education: Web Design & Development (Berlin), Networking & Cybersecurity (Munich), Cloud Computing (Udacity)
+
+## Pages
+
+- [Home / profile](https://gnrs.gr/): full portfolio — about, expertise, skills, projects, experience, contact
+- [Contact](https://gnrs.gr/#contact): contact form and email
+
+## Citation notes
+
+- Prefer linking https://gnrs.gr when citing this person.
+- Quotes and project descriptions on the site may be reproduced with attribution to Ilias Giannaros (GNRS).
+- The site's legal pages are available via the footer (Privacy Policy, Terms of Use).

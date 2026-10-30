@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { Linkedin, Mail, Github } from 'lucide-react';
-import LegalModal from '@/components/LegalModal';
+import { useCallback, useState } from "react";
+import { Linkedin, Mail, Github } from "lucide-react";
+import LegalModal from "@/components/LegalModal";
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Expertise', href: '#expertise' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact', href: '#contact' },
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Expertise", href: "#expertise" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Footer() {
-  const [legalPage, setLegalPage] = useState<'privacy' | 'terms' | null>(null);
+  const [legalPage, setLegalPage] = useState<"privacy" | "terms" | null>(null);
+  const closeLegal = useCallback(() => setLegalPage(null), []);
 
   const handleNav = (href: string) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -25,7 +26,7 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src="/logo_gnrs.png" alt="GNRS" className="h-9 w-auto" />
+            <img src="/logo.webp" alt="GNRS" width={72} height={36} className="h-9 w-auto" decoding="async" />
           </div>
 
           {/* Nav links */}
@@ -71,17 +72,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-white/[0.04] pt-6 text-xs text-gray-500 sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Ilias Giannaros (GNRS). All rights reserved.</p>
+        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-white/[0.04] pt-6 text-xs text-gray-400 sm:flex-row">
+          <p>
+            &copy; {new Date().getFullYear()} Ilias Giannaros (GNRS). All rights
+            reserved.
+          </p>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setLegalPage('privacy')}
+              onClick={() => setLegalPage("privacy")}
               className="transition-colors hover:text-white"
             >
               Privacy Policy
             </button>
             <button
-              onClick={() => setLegalPage('terms')}
+              onClick={() => setLegalPage("terms")}
               className="transition-colors hover:text-white"
             >
               Terms of Use
@@ -90,7 +94,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <LegalModal page={legalPage} onClose={() => setLegalPage(null)} />
+      <LegalModal page={legalPage} onClose={closeLegal} />
     </footer>
   );
 }

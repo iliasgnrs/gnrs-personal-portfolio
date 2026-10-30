@@ -1,4 +1,4 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 interface RevealProps {
@@ -17,7 +17,12 @@ const variants: Variants = {
   },
 };
 
+/** Fades content in the first time it scrolls into view. */
 export default function Reveal({ children, delay = 0, y = 30, className }: RevealProps) {
+  const reduceMotion = useReducedMotion();
+
+  if (reduceMotion) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       className={className}

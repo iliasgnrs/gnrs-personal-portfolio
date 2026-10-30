@@ -1,46 +1,56 @@
-import { useState, type FormEvent } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, MapPin, Linkedin, Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import Reveal from '@/components/Reveal';
-import SectionHeading from '@/components/SectionHeading';
-import { supabase } from '@/lib/supabase';
+import { useState, type FormEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Mail,
+  MapPin,
+  Linkedin,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
+import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
+import { submitToCrm } from "@/lib/crm";
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
+type Status = "idle" | "loading" | "success" | "error";
 
 export default function Contact() {
-  const [status, setStatus] = useState<Status>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('loading');
-    setErrorMsg('');
+    setStatus("loading");
+    setErrorMsg("");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
     const data = {
-      full_name: formData.get('full_name') as string,
-      email: formData.get('email') as string,
-      phone: (formData.get('phone') as string) || null,
-      subject: formData.get('subject') as string,
-      message: formData.get('message') as string,
+      full_name: formData.get("full_name") as string,
+      email: formData.get("email") as string,
+      phone: (formData.get("phone") as string) || null,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
     };
 
     if (!data.full_name || !data.email || !data.subject || !data.message) {
-      setStatus('error');
-      setErrorMsg('Please fill in all required fields.');
+      setStatus("error");
+      setErrorMsg("Please fill in all required fields.");
       return;
     }
 
-    const { error } = await supabase.from('contact_submissions').insert(data);
+    const error = await submitToCrm(data);
 
     if (error) {
-      setStatus('error');
-      setErrorMsg('Something went wrong sending your message. Please try again.');
+      setStatus("error");
+      setErrorMsg(
+        "Something went wrong sending your message. Please try again.",
+      );
       return;
     }
 
-    setStatus('success');
+    setStatus("success");
     form.reset();
   };
 
@@ -57,7 +67,9 @@ export default function Contact() {
           {/* Contact info */}
           <Reveal className="lg:col-span-2" delay={0.1}>
             <div className="glass h-full p-8">
-              <h3 className="mb-6 font-display text-lg font-semibold text-white">Get in Touch</h3>
+              <h3 className="mb-6 font-display text-lg font-semibold text-white">
+                Get in Touch
+              </h3>
 
               <div className="space-y-5">
                 <a
@@ -68,7 +80,7 @@ export default function Contact() {
                     <Mail className="h-5 w-5 text-accent-cyan" />
                   </span>
                   <div>
-                    <div className="text-xs text-gray-500">Email</div>
+                    <div className="text-xs text-gray-400">Email</div>
                     <div className="text-sm font-medium">ilias@gnrs.gr</div>
                   </div>
                 </a>
@@ -83,7 +95,7 @@ export default function Contact() {
                     <Linkedin className="h-5 w-5 text-accent-cyan" />
                   </span>
                   <div>
-                    <div className="text-xs text-gray-500">LinkedIn</div>
+                    <div className="text-xs text-gray-400">LinkedIn</div>
                     <div className="text-sm font-medium">/in/iliasgnrs</div>
                   </div>
                 </a>
@@ -93,15 +105,16 @@ export default function Contact() {
                     <MapPin className="h-5 w-5 text-accent-cyan" />
                   </span>
                   <div>
-                    <div className="text-xs text-gray-500">Location</div>
+                    <div className="text-xs text-gray-400">Location</div>
                     <div className="text-sm font-medium">Kalamaria, Greece</div>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
-                <p className="text-xs leading-relaxed text-gray-500">
-                  Typically responds within 24 hours. For urgent inquiries, include a phone number.
+                <p className="text-xs leading-relaxed text-gray-400">
+                  Typically responds within 24 hours. For urgent inquiries,
+                  include a phone number.
                 </p>
               </div>
             </div>
@@ -118,10 +131,11 @@ export default function Contact() {
               </div>
 
               <div className="mt-4">
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">
+                <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-gray-300">
                   Message <span className="text-red-400">*</span>
                 </label>
                 <textarea
+                  id="message"
                   name="message"
                   required
                   rows={5}
@@ -132,18 +146,24 @@ export default function Contact() {
 
               <button
                 type="submit"
-                disabled={status === 'loading' || status === 'success'}
+                disabled={status === "loading" || status === "success"}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#f51de3,#c416b9)] px-6 py-3.5 font-semibold text-white shadow-lg shadow-accent-blue/25 transition-all hover:shadow-accent-blue/50 hover:brightness-110 disabled:opacity-60"
               >
-                {status === 'loading' && <Loader2 className="h-4 w-4 animate-spin" />}
-                {status === 'success' && <CheckCircle2 className="h-4 w-4" />}
-                {status === 'idle' && <Send className="h-4 w-4" />}
-                {status === 'error' && <AlertCircle className="h-4 w-4" />}
-                {status === 'loading' ? 'Sending…' : status === 'success' ? 'Message Sent!' : 'Send Message'}
+                {status === "loading" && (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                )}
+                {status === "success" && <CheckCircle2 className="h-4 w-4" />}
+                {status === "idle" && <Send className="h-4 w-4" />}
+                {status === "error" && <AlertCircle className="h-4 w-4" />}
+                {status === "loading"
+                  ? "Sending…"
+                  : status === "success"
+                    ? "Message Sent!"
+                    : "Send Message"}
               </button>
 
               <AnimatePresence>
-                {status === 'error' && (
+                {status === "error" && (
                   <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -153,7 +173,7 @@ export default function Contact() {
                     {errorMsg}
                   </motion.p>
                 )}
-                {status === 'success' && (
+                {status === "success" && (
                   <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -179,13 +199,14 @@ interface FieldProps {
   required?: boolean;
 }
 
-function Field({ label, name, type = 'text', required }: FieldProps) {
+function Field({ label, name, type = "text", required }: FieldProps) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-gray-300">
+      <label htmlFor={name} className="mb-1.5 block text-sm font-medium text-gray-300">
         {label} {required && <span className="text-red-400">*</span>}
       </label>
       <input
+        id={name}
         type={type}
         name={name}
         required={required}

@@ -2,14 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/webp" href="/favicon.webp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="/logo.webp" fetchpriority="high" />
+    <link rel="preload" as="font" type="font/woff2" href="/assets/inter-latin-wght-normal-Dx4kXJAl.woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ilias Giannaros (GNRS) — Headless Full-Stack Developer & AI Agent Engineer</title>
+    <title>Ilias Giannaros (GNRS) — Full-Stack Developer</title>
     <meta
       name="description"
-      content="Ilias Giannaros (GNRS) — Full-stack developer specializing in headless architectures, WordPress/WooCommerce plugins, React/TypeScript frontends, and MCP server + AI agent development. Based in Kalamaria, Greece."
+      content="Ilias Giannaros (GNRS) builds headless architectures, WordPress/WooCommerce plugins, React frontends, and MCP servers. Based in Kalamaria, Greece."
     />
     <meta name="author" content="Ilias Giannaros" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="geo.region" content="GR-B" />
+    <meta name="geo.placename" content="Kalamaria, Thessaloniki" />
+    <meta name="geo.position" content="40.5833;22.9500" />
+    <meta name="ICBM" content="40.5833, 22.9500" />
     <meta
       name="keywords"
       content="Ilias Giannaros, GNRS, headless developer, WordPress plugin developer, WooCommerce developer, React TypeScript, AI agent engineer, MCP server, full-stack developer Greece, Kalamaria"
@@ -18,23 +28,53 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Ilias Giannaros (GNRS) — Headless Full-Stack Developer & AI Agent Engineer" />
+    <meta property="og:title" content="Ilias Giannaros (GNRS) — Full-Stack Developer" />
     <meta
       property="og:description"
-      content="Full-stack developer building headless architectures, custom WordPress/WooCommerce plugins, and MCP servers + AI agent skills. 10+ years of production web engineering."
+      content="Headless architectures, WordPress/WooCommerce plugins, React/TypeScript frontends, and MCP + AI agent development. 10+ years of production engineering."
     />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="el_GR" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@iliasgnrs" />
+    <meta name="twitter:creator" content="@iliasgnrs" />
     <meta name="twitter:title" content="Ilias Giannaros (GNRS) — Full-Stack Developer & AI Agent Engineer" />
     <meta
       name="twitter:description"
       content="Headless architectures, WordPress/WooCommerce plugins, React/TypeScript frontends, and MCP server + AI agent development."
     />
-    <meta property="og:image" content="https://bolt.new/static/og_default.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+    <meta property="og:image" content="https://gnrs.gr/og-image.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ilias Giannaros (GNRS)">
+    <meta property="og:url" content="https://gnrs.gr/">
+    <meta property="og:site_name" content="GNRS">
+    <meta name="twitter:image" content="https://gnrs.gr/og-image.webp">
+    <meta name="twitter:image:alt" content="Ilias Giannaros (GNRS)">
+    <link rel="canonical" href="https://gnrs.gr/">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary">
+    <link rel="ard" href="/.well-known/ard.json">
+
+    <script>
+      addEventListener('load', function () {
+        // TODO(analytics): replace with the real Buddystat site ID before enabling.
+        // Held inert while the placeholder is in place: the loader sends full query
+        // strings (incl. any email/UTM params) to the analytics tenant.
+        var SITE_ID = '';
+        if (!SITE_ID) return;
+        var s = document.createElement('script');
+        s.src = 'https://app.buddystat.com/api/script.js';
+        s.setAttribute('data-site-id', SITE_ID);
+        s.setAttribute('data-replay-mask-all-inputs', '');
+        s.defer = true;
+        document.head.appendChild(s);
+      });
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://gnrs.gr/#person","name":"Ilias Giannaros","alternateName":["GNRS","Ilias GNRS"],"url":"https://gnrs.gr","image":"https://gnrs.gr/portrait.webp","jobTitle":"Headless Full-Stack Developer & AI Agent Engineer","description":"Full-stack developer specializing in headless architectures, WordPress/WooCommerce plugins, React and TypeScript frontends, and MCP server plus AI agent development.","email":"mailto:ilias@gnrs.gr","knowsLanguage":["el-GR","en"],"address":{"@type":"PostalAddress","addressLocality":"Kalamaria","addressRegion":"Thessaloniki","addressCountry":"GR"},"sameAs":["https://gr.linkedin.com/in/iliasgnrs","https://github.com/iliasgnrs"],"knowsAbout":["Headless Architecture","TypeScript & React Engineering","WordPress & WooCommerce Plugins","PHP Backend Engineering","MCP Server Development","Custom AI Agent Skills","eCommerce Systems","PWA & Booking Systems"],"worksFor":{"@id":"https://gnrs.gr/#service"},"hasOccupation":{"@type":"Occupation","name":"Full-Stack Developer","occupationalCategory":"15-1252.00","skills":"Headless Architecture, TypeScript & React Engineering, WordPress & WooCommerce Plugins, PHP Backend Engineering, MCP Server Development, Custom AI Agent Skills, eCommerce Systems, PWA & Booking Systems"}},{"@type":"ProfessionalService","@id":"https://gnrs.gr/#service","name":"GNRS — Ilias Giannaros","url":"https://gnrs.gr","image":"https://gnrs.gr/logo.webp","email":"ilias@gnrs.gr","founder":{"@id":"https://gnrs.gr/#person"},"areaServed":[{"@type":"Country","name":"Greece"},{"@type":"Place","name":"Europe"}],"address":{"@type":"PostalAddress","addressLocality":"Kalamaria","addressRegion":"Thessaloniki","addressCountry":"GR"},"knowsAbout":["Headless Architecture","TypeScript & React Engineering","WordPress & WooCommerce Plugins","PHP Backend Engineering","MCP Server Development","Custom AI Agent Skills","eCommerce Systems","PWA & Booking Systems"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Engineering Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Headless web application development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"WordPress & WooCommerce plugin development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"React & TypeScript frontend engineering"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"MCP server and AI agent development"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"E-commerce systems and PWA booking platforms"}}]}},{"@type":"WebSite","@id":"https://gnrs.gr/#website","url":"https://gnrs.gr","name":"Ilias Giannaros (GNRS) — Portfolio","inLanguage":"en","publisher":{"@id":"https://gnrs.gr/#person"}},{"@type":"ProfilePage","@id":"https://gnrs.gr/#page","url":"https://gnrs.gr","name":"Ilias Giannaros (GNRS) — Headless Full-Stack Developer & AI Agent Engineer","isPartOf":{"@id":"https://gnrs.gr/#website"},"about":{"@id":"https://gnrs.gr/#person"},"mainEntity":{"@id":"https://gnrs.gr/#person"},"primaryImageOfPage":"https://gnrs.gr/og-image.webp"},{"@type":"ItemList","@id":"https://gnrs.gr/#projects","name":"Selected projects by Ilias Giannaros","url":"https://gnrs.gr/#projects","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"SoftwareApplication","name":"Theros","url":"https://therosapp.eu","description":"Accommodation management SaaS.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":2,"item":{"@type":"SoftwareApplication","name":"Buddystat","url":"https://buddystat.com","description":"Privacy-first web analytics SaaS.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":3,"item":{"@type":"SoftwareApplication","name":"Atractos","url":"https://atractos.com","description":"Engineering hub SaaS.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":4,"item":{"@type":"SoftwareApplication","name":"Adapedu","url":"https://adapedu.com","description":"Education SaaS platform.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":5,"item":{"@type":"SoftwareApplication","name":"Menuvi","url":"https://menuvi.app","description":"Hospitality menu platform.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":6,"item":{"@type":"SoftwareApplication","name":"Agrivate","url":"https://agrivate.eu","description":"IoT smart agriculture platform.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}},{"@type":"ListItem","position":7,"item":{"@type":"SoftwareApplication","name":"Scalepath","url":"https://scalepath.ee","description":"European technology venture hub.","applicationCategory":"BusinessApplication","author":{"@id":"https://gnrs.gr/#person"}}}]}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Who is Ilias Giannaros (GNRS)?","acceptedAnswer":{"@type":"Answer","text":"Ilias Giannaros, known online as GNRS, is a full-stack developer based in Kalamaria, Thessaloniki, Greece. He builds headless web architectures, custom WordPress and WooCommerce plugins, React and TypeScript frontends, and MCP servers with AI agent skills."}},{"@type":"Question","name":"What services does GNRS offer?","acceptedAnswer":{"@type":"Answer","text":"Headless and SaaS web application development, WordPress and WooCommerce plugin engineering, React and TypeScript frontend development, MCP server and AI agent development, and e-commerce or PWA booking systems."}},{"@type":"Question","name":"Where is GNRS based and who does he work with?","acceptedAnswer":{"@type":"Answer","text":"GNRS is based in Kalamaria, Thessaloniki, Greece, and works with clients across Greece and Europe, including hospitality, agriculture, education, insurance, and e-commerce businesses."}},{"@type":"Question","name":"How can I contact Ilias Giannaros?","acceptedAnswer":{"@type":"Answer","text":"By email at ilias@gnrs.gr or through the contact form at https://gnrs.gr/#contact. He typically responds within 24 hours."}}]}</script>
 </head>
   <body>
     <div id="root"></div>

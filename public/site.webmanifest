@@ -1,0 +1,16 @@
+{
+  "name": "Ilias Giannaros (GNRS)",
+  "short_name": "GNRS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#242424",
+  "theme_color": "#f51de3",
+  "icons": [
+    {
+      "src": "/favicon.webp",
+      "sizes": "1080x1080",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}
