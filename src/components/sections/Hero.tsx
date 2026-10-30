@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles, Mail } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
+import ProfilePhoto from '@/components/ProfilePhoto';
 
 const stats = [
   { value: '10+', label: 'Years Experience' },
@@ -18,6 +19,9 @@ export default function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center justify-center px-4 pt-24">
       <div className="mx-auto max-w-4xl text-center">
+        {/* Profile */}
+        <ProfilePhoto alt="Ilias Giannaros" />
+
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
