@@ -64,11 +64,66 @@ In **Cloudflare dashboard → gnrs.gr → DNS → Records**:
 
 ## Environment variables
 
-Set under **Pages project → Settings → Environment variables** (build scope):
+Set under **Pages project → Settings → Environment variables**:
 
-| Variable | Required | Notes |
-|---|---|---|
-| `VITE_HUBSPOT_ENDPOINT` | No | Contact form is inert until set. See [ISSUES.md](ISSUES.md#a-2). |
+| Variable | Scope | Required | Notes |
+|---|---|---|---|
+| `HUBSPOT_ACCESS_TOKEN` | Production + Preview | Yes | HubSpot Private App token (`pat-…`). Read only by [`functions/api/contact.ts`](../functions/api/contact.ts). Mark it as a **secret**. |
+| `HUBSPOT_OWNER_ID` | Production + Preview | No | Overrides the default owner `96939195`. |
+| `TURNSTILE_SECRET` | Production + Preview | Yes | Turnstile widget secret. Verification **fails closed**: without it every submission is rejected with `403`. |
+| `TURNSTILE_HOSTNAMES` | Production + Preview | Yes | Comma-separated allowlist of the `hostname` values Siteverify may report — `gnrs.gr,www.gnrs.gr,gnrs-personal-portfolio.pages.dev`. A leading dot means suffix match. |
+
+The contact form posts to the same-origin Pages Function `/api/contact` — no build
+variable is needed.
+
+### Turnstile widget setup
+
+The public sitekey is `0x4AAAAAAC_tuej3ARR5QYzO` ([`src/lib/turnstile.ts`](../src/lib/turnstile.ts)),
+and the widget is rendered with `action = "contact"`, which Siteverify re-checks.
+
+In **Cloudflare dashboard → Turnstile → the GNRS widget → Hostname Management**, the
+hostnames must be registered, otherwise the widget fails client-side with error
+`110200` ("Domain not authorized"):
+
+- `gnrs.gr` (append i.e. also covers `www.gnrs.gr`)
+- `gnrs-personal-portfolio.pages.dev` — covers preview URLs (`<hash>.gnrs-personal-portfolio.pages.dev`)
+
+`TURNSTILE_HOSTNAMES` must list the same hosts; keep the two in sync.
+
+Local development against `http://127.0.0.1` / `localhost` triggers `110200` unless those
+hostnames are temporarily added to the widget, or the always-pass test keys are used
+(`sitekey 1x00000000000000000000AA` with secret `1x0000000000000000000000000000000AA`).
+
+### HubSpot setup
+
+The Pages Function writes a CRM contact with these properties:
+
+| HubSpot property | Source |
+|---|---|
+| `email`, `firstname`, `lastname` | Full Name / Email fields |
+| `phone` | Phone field (optional) |
+| `message` | `Subject: <subject>` followed by the message body |
+| `venture_source` | Hardcoded `GNRS` (existing custom property) |
+| `hubspot_owner_id` | `HUBSPOT_OWNER_ID` or `96939195` |
+
+Submitting an email that already exists updates the existing contact (`PATCH`)
+instead of creating a duplicate.
+
+Local development:
+
+```bash
+# .dev.vars (git-ignored)
+HUBSPOT_ACCESS_TOKEN="pat-..."
+HUBSPOT_OWNER_ID="96939195"
+TURNSTILE_SECRET="0x..."
+TURNSTILE_HOSTNAMES="localhost,127.0.0.1"
+
+npx wrangler pages dev dist --compatibility-date=2026-08-01
+```
+
+Response codes: `201` created, `200` updated, `400` invalid input, `403` cross-origin
+or failed human verification (including missing Turnstile configuration), `413` body too
+large, `500` HubSpot token missing, `502` HubSpot rejected or timed out.
 
 The analytics site ID is **not** an env var — it is a constant in `index.html`, currently
 empty on purpose ([ISSUES.md A-1](ISSUES.md#a-1--analytics-site-id-is-a-placeholder-open)).

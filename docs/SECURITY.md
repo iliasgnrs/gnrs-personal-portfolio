@@ -71,16 +71,20 @@ hash that silently desynchronises) was real and is documented with a recompute p
 
 ```
 default-src 'self'
-script-src  'self' 'sha256-vI8u9MekuJcLO8B3MvT+ECOr1rGCKisQ12UQh/P7DD0=' https://app.buddystat.com
+script-src  'self' 'sha256-vI8u9MekuJcLO8B3MvT+ECOr1rGCKisQ12UQh/P7DD0=' https://app.buddystat.com https://challenges.cloudflare.com
 style-src   'self' 'unsafe-inline'
 font-src    'self'
 img-src     'self' data:
-connect-src 'self' https://app.buddystat.com
+connect-src 'self' https://app.buddystat.com https://challenges.cloudflare.com
+frame-src   https://challenges.cloudflare.com
+worker-src  'self' blob:
 frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
 ```
 
 `style-src 'unsafe-inline'` is required by Framer Motion's inline `style` attributes and is
 not a script-execution path. `script-src` has **no** `'unsafe-inline'`.
+`challenges.cloudflare.com` is the Turnstile widget (script, Siteverify calls from the
+widget and its iframe); it is loaded lazily, only when the contact form mounts.
 
 Alongside: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`,
 `X-Frame-Options: DENY`, `Permissions-Policy` denying geolocation/microphone/camera/payment.
@@ -90,7 +94,12 @@ Alongside: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-wh
 - No `dangerouslySetInnerHTML`, `innerHTML`, `eval`, `new Function` or `document.write`.
 - Contact payload goes through `fetch(JSON)` only — no HTML sink.
 - External links use `rel="noopener noreferrer"`.
-- `src/lib/crm.ts` fails closed when unconfigured rather than silently dropping submissions.
+- `src/lib/crm.ts` surfaces only the endpoint's plain error string (≤ 200 chars) and never
+  renders an arbitrary upstream payload.
+- `functions/api/contact.ts` keeps the HubSpot token server-side, rejects cross-site
+  `Origin`s, requires a Turnstile token that Siteverify accepts (fails closed when
+  unconfigured), caps the body at 20 kB and every field length, and logs HubSpot errors
+  server-side only.
 
 ### Build pipeline
 
@@ -110,7 +119,7 @@ Alongside: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-wh
 
 | Data | Destination | Leaves the browser? |
 |---|---|---|
-| Contact form fields | `/api/contact` → HubSpot (when configured) | Yes, when A-2 is closed |
+| Contact form fields | `/api/contact` → HubSpot | Yes |
 | Page views / device / path | Buddystat | **No** — loader inert (A-1) |
 | Visitor identifier | `localStorage` (Buddystat, when enabled) | With page views only |
 

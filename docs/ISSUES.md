@@ -41,21 +41,33 @@ and update [SEO-GEO.md](SEO-GEO.md)/[SECURITY.md](SECURITY.md) accordingly.
 > PY
 > ```
 
-### A-2 — Contact form not connected **OPEN**
-**Files:** `src/lib/crm.ts`, `src/components/sections/Contact.tsx`
+### A-2 — Contact form not connected **CLOSED**
+**Files:** `src/lib/crm.ts`, `src/components/sections/Contact.tsx`, `functions/api/contact.ts`
 
-HubSpot is the intended destination. `submitToCrm()` returns an error
-while `VITE_HUBSPOT_ENDPOINT` is unset, so the form shows a failure message rather than
-pretending to succeed.
+The form posts to the same-origin Pages
+Function `/api/contact`, which validates and length-caps every field, rejects cross-origin
+`Origin`s, requires a Cloudflare Turnstile token, and creates or updates a CRM contact
+tagged `venture_source = "GNRS"`.
 
-**To close:** implement the HubSpot submission endpoint, set `VITE_HUBSPOT_ENDPOINT` as a
-Pages build variable, then allow the origin in the CSP `connect-src`.
+**Requires:** `HUBSPOT_ACCESS_TOKEN`, `TURNSTILE_SECRET` and `TURNSTILE_HOSTNAMES` — see
+[DEPLOYMENT.md](DEPLOYMENT.md#environment-variables). The Turnstile widget must also have
+`gnrs.gr` and `gnrs-personal-portfolio.pages.dev` registered in Hostname Management.
 
-### A-3 — Privacy Policy mentions HubSpot before it ships **OPEN**
+### A-4 — Form breaks on hostnames not registered on the Turnstile widget **OPEN**
+**Files:** `src/components/TurnstileWidget.tsx`, `docs/DEPLOYMENT.md`
+
+Turnstile rejects unregistered hostnames client-side with `110200` ("Domain not
+authorized"); the form then shows "Human verification could not load". This matches the
+server, which fails closed with `403`. Local `127.0.0.1` always hits this unless the host
+is temporarily registered on the widget or the always-pass test keys are used.
+
+**To close:** confirm the hostname list covers production and preview URLs.
+
+### A-3 — Privacy Policy mentions HubSpot before it ships **CLOSED**
 **File:** `src/components/LegalModal.tsx:33`
 
-The copy now says submissions are stored in "a customer relationship management system
-(HubSpot)". Accurate once A-2 lands; slightly premature until then. Revisit together with A-2.
+The copy says submissions are stored in "a customer relationship management system
+(HubSpot)". Accurate now that A-2 has landed.
 
 ---
 

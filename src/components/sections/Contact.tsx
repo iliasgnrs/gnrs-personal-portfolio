@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/TurnstileWidget";
 import { submitToCrm } from "@/lib/crm";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -18,6 +19,7 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const turnstile = useRef<TurnstileHandle>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +34,9 @@ export default function Contact() {
       phone: (formData.get("phone") as string) || null,
       subject: formData.get("subject") as string,
       message: formData.get("message") as string,
+      "cf-turnstile-response": String(
+        formData.get("cf-turnstile-response") ?? "",
+      ),
     };
 
     if (!data.full_name || !data.email || !data.subject || !data.message) {
@@ -39,13 +44,21 @@ export default function Contact() {
       setErrorMsg("Please fill in all required fields.");
       return;
     }
+    if (!data["cf-turnstile-response"]) {
+      setStatus("error");
+      setErrorMsg("Please complete the human verification check.");
+      return;
+    }
 
     const error = await submitToCrm(data);
+
+    // Tokens are single-use: always request a fresh widget after an attempt.
+    turnstile.current?.reset();
 
     if (error) {
       setStatus("error");
       setErrorMsg(
-        "Something went wrong sending your message. Please try again.",
+        error instanceof Error ? error.message : "Please try again.",
       );
       return;
     }
@@ -139,10 +152,13 @@ export default function Contact() {
                   name="message"
                   required
                   rows={5}
+                  maxLength={4000}
                   className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-gray-200 outline-none transition-colors focus:border-accent-blue/50 focus:bg-white/[0.05]"
                   placeholder="Tell me about your project, timeline, and goals…"
                 />
               </div>
+
+              <TurnstileWidget ref={turnstile} className="mt-5" />
 
               <button
                 type="submit"
@@ -199,6 +215,14 @@ interface FieldProps {
   required?: boolean;
 }
 
+/** Mirrors the caps enforced by functions/api/contact.ts. */
+const MAX_LENGTHS: Record<string, number> = {
+  full_name: 120,
+  email: 254,
+  phone: 40,
+  subject: 200,
+};
+
 function Field({ label, name, type = "text", required }: FieldProps) {
   return (
     <div>
@@ -210,6 +234,7 @@ function Field({ label, name, type = "text", required }: FieldProps) {
         type={type}
         name={name}
         required={required}
+        maxLength={MAX_LENGTHS[name]}
         className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-gray-200 outline-none transition-colors focus:border-accent-blue/50 focus:bg-white/[0.05]"
       />
     </div>
