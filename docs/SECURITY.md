@@ -15,6 +15,12 @@ found and fixed; one reported HIGH was investigated and rejected.
 |---|---|---|---|---|
 | 1 | 🟠 HIGH | `index.html` (analytics loader) | Placeholder Buddystat ID was live and POSTed full query strings to an unverified tenant | **Fixed** |
 | 2 | 🟡 MEDIUM | `src/components/LegalModal.tsx:33–37` | Privacy Policy described a removed storage backend and an inaccurate replay posture | **Fixed** |
+| 3 | ⚪ LOW | `docs/DEPLOYMENT.md` | Committed Cloudflare account ID and owner email address | **Fixed** (redacted) |
+
+Review of the contact integration added 2026-10-31: no secrets in the repo or git history
+(only placeholders such as `pat-...`), none in the shipped bundle, and the token/secret are
+read exclusively from Pages secrets server-side. The public Turnstile sitekey is not a
+secret.
 
 ### Finding 1 — analytics data egress
 
@@ -62,6 +68,26 @@ An automated reviewer reported **HIGH**: the CSP `sha256` hash for the inline lo
 
 Base64 padding is valid in a CSP hash-source. The *underlying* fragility (a hand-maintained
 hash that silently desynchronises) was real and is documented with a recompute procedure.
+
+---
+
+### Finding 3 — repository metadata
+
+`docs/DEPLOYMENT.md` recorded the Cloudflare account ID and the owner's email as a
+convenience note. Neither is a credential, but both are unnecessary in a public repository
+and useful to an attacker mapping the account. The account is now identified by project
+name only.
+
+### Contact endpoint review (2026-10-31)
+
+| Control | Implementation |
+|---|---|
+| Secret handling | `HUBSPOT_ACCESS_TOKEN` / `TURNSTILE_SECRET` are Pages secrets, read only inside the Function |
+| Bot protection | Turnstile Siteverify; fails closed on missing config, network error, non-2xx, wrong action or hostname |
+| Abuse limits | 20 kB body cap, per-field caps, 10 s timeouts on both upstream calls |
+| Cross-site posting | Same-origin `Origin` check before any work is done |
+| Error disclosure | Upstream HubSpot bodies are logged server-side only; clients get a generic message |
+| Client rendering | Client surfaces only a plain error string ≤ 200 characters |
 
 ---
 

@@ -21,7 +21,12 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.env.*
+!.env.example
 .dev.vars
+.dev.vars.*
 
-# Cloudflare wrangler local state
+# Cloudflare wrangler local state and credentials
 .wrangler
+.wrangler-*
+**/.dev.vars

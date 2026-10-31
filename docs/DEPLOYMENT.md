@@ -4,7 +4,7 @@
 
 | Item | Value |
 |---|---|
-| Cloudflare account | `Iliasgnrs@gmail.com's Account` (`b72dfed9d933eb6005417b8237655a2a`) |
+| Cloudflare account | the owner's account (identified by the `gnrs.gr` zone) |
 | Pages project | `gnrs-personal-portfolio` |
 | Production branch | `main` |
 | Build output | `dist/` (`pages_build_output_dir` in `wrangler.jsonc`) |

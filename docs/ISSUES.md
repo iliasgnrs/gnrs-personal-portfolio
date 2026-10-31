@@ -41,7 +41,7 @@ and update [SEO-GEO.md](SEO-GEO.md)/[SECURITY.md](SECURITY.md) accordingly.
 > PY
 > ```
 
-### A-2 — Contact form not connected **CLOSED**
+### A-2 — Contact form not connected **CLOSED** (2026-10-31)
 **Files:** `src/lib/crm.ts`, `src/components/sections/Contact.tsx`, `functions/api/contact.ts`
 
 The form posts to the same-origin Pages
@@ -63,7 +63,41 @@ is temporarily registered on the widget or the always-pass test keys are used.
 
 **To close:** confirm the hostname list covers production and preview URLs.
 
-### A-3 — Privacy Policy mentions HubSpot before it ships **CLOSED**
+### A-5 — Turnstile gate rejected every production submission **CLOSED** (2026-10-31)
+**Files:** `functions/api/contact.ts`, `docs/DEPLOYMENT.md`
+
+Three independent defects surfaced only on the deployed site; the local build could not
+reproduce any of them because Cloudflare's always-pass test keys behave differently.
+
+1. **`TURNSTILE_HOSTNAMES` held the sitekey** (`0x4aaaaaa…`) instead of a hostname list, so
+   no `hostname` could ever match → `403` / `hostname-mismatch`. Fixed the secret to
+   `gnrs.gr,www.gnrs.gr,gnrs-personal-portfolio.pages.dev`.
+2. **`action-mismatch`.** The action check was too strict for test keys, which never echo
+   `action`. It is now tolerated only when the secret starts with `1x00000000…` (Cloudflare's
+   documented always-pass pair); production keys must still match `contact`.
+3. **`hostname-mismatch` on the same test keys**, which always report `example.com`; the
+   allowlist is skipped for them only.
+
+Also hardened: a `www.` prefix is ignored when matching hostnames, and rejection reasons
+include the reported value (`hostname-mismatch:gnrs.gr`) so logs are diagnosable without
+deploying a debug build.
+
+Verified end-to-end afterwards: the widget issues a live token, the UI shows "Message
+Sent!", and HubSpot returns `201 {"ok":true,"created":true}`.
+
+### A-6 — `venture_source = "GNRS"` does not exist in HubSpot **CLOSED** (2026-10-31)
+**File:** `functions/api/contact.ts`
+
+`venture_source` is a dropdown property; the portal only allowed `ScalePath`, `Agrivate`,
+`Buddystat`, `Menuvi`, `Web Dev`. Every submission therefore failed with
+`VALIDATION_ERROR / INVALID_OPTION` and surfaced as `502`.
+
+**Fix:** submitted leads are tagged **`Web Dev`** (`VENTURE_SOURCE`). Adding a dedicated
+`GNRS` option in HubSpot and switching the constant is a one-line change. HubSpot rejects the
+*entire* contact when the value is not an allowed option, so the list is documented in
+[DEPLOYMENT.md](DEPLOYMENT.md).
+
+### A-7 — Privacy Policy mentions HubSpot **CLOSED** (2026-10-31)
 **File:** `src/components/LegalModal.tsx:33`
 
 The copy says submissions are stored in "a customer relationship management system

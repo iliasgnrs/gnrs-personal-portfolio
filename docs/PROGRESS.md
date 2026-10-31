@@ -96,6 +96,57 @@ CSP-hash finding was **disproven** and rejected.
 
 ---
 
+## 2026-10-31 — Contact form → HubSpot, Turnstile gate
+
+### 1. Pages Function endpoint
+Added `functions/api/contact.ts` (adapting the working integration from the `scalepath` and
+`agrivate-bloom` projects). `POST /api/contact`:
+
+- rejects a cross-site `Origin`,
+- validates and length-caps every field (caps mirrored as `maxLength` on the inputs),
+- verifies a Cloudflare Turnstile token, failing closed,
+- creates a HubSpot contact, or updates the existing one by email on `409`.
+
+The HubSpot Private App token and the Turnstile secret stay in Pages secrets; the browser
+only ever talks to the same-origin function, so no build variable or extra CSP origin was
+needed for the API call itself.
+
+### 2. Turnstile widget
+`src/components/TurnstileWidget.tsx` renders the widget explicitly (lazy script load, no
+page-load cost). Tokens are single-use, so `reset()` removes the widget and re-renders a
+fresh one — verified that a second submission works without reloading. Stale
+`error-callback`s from a replaced widget are ignored, and a specific failure message is
+shown instead of a dead gap.
+
+CSP gained `challenges.cloudflare.com` in `script-src`, `connect-src`, and new `frame-src`,
+plus `worker-src 'self' blob:` for the challenge workers.
+
+HubSpot's own `http2` / Turnstile internals still emit `console.warn`/`error` noise (CSP
+`data:,` probes, `110200`); none of it originates in our code and it cannot be suppressed.
+Nothing in the app opens DevTools, and browsers block that anyway.
+
+### 3. Deployment defects (see ISSUES A-5, A-6)
+The first three deploys all failed on `gnrs.gr` and each failure was only visible in the
+deployment logs (`wrangler pages deployment tail <id>`):
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `403 hostname-mismatch` | `TURNSTILE_HOSTNAMES` was the sitekey, not a hostname list | corrected the secret |
+| `403 action-mismatch` | test keys never echo `action` | tolerate a missing action for test keys only |
+| `502` from HubSpot | `venture_source = "GNRS"` is not an allowed dropdown option | use `Web Dev` |
+
+Rejection reasons now carry the reported value, so the next failure is diagnosable from one
+log line.
+
+### 4. Verification
+- `npm run typecheck`, `npm run lint`, `npm run build` — clean.
+- Local `wrangler pages dev` exercised with the always-pass test keys, including the
+  reset/re-render path.
+- Production on `gnrs.gr`: live token issued, form shows "Message Sent!", API returns
+  `201 {"ok":true,"created":true}`.
+
+---
+
 ## Verification snapshots
 
 | Check | Result |
@@ -107,3 +158,4 @@ CSP-hash finding was **disproven** and rejected.
 | Lighthouse (gnrs.gr) | A11y 100 · BP 100 · SEO 100 |
 | PageSpeed (owner-run) | Desktop 98 · Mobile 84+ |
 | Raw HTML `curl` | 1 h1, 2 JSON-LD blocks, no analytics egress |
+| HubSpot end-to-end (gnrs.gr) | `201 {"ok":true,"created":true}`, UI "Message Sent!" |
