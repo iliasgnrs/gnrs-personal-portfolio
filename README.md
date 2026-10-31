@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./public/readme-logo.webp" alt="GNRS" width="420" />
+</p>
+
 # gnrs.gr — Ilias Giannaros (GNRS)
 
 **[gnrs.gr](https://gnrs.gr)** — the personal portfolio and services site of a headless
