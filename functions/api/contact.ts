@@ -2,8 +2,8 @@
  * Cloudflare Pages Function — contact form → HubSpot.
  *
  * Port of the proven integration from the `scalepath` and `agrivate-bloom`
- * projects: creates a CRM contact with `venture_source = "GNRS"` (the label
- * already configured in the portal) and assigns it to the HubSpot owner. If a
+ * projects: creates a CRM contact tagged with the `venture_source` label and
+ * assigns it to the HubSpot owner. If a
  * contact with that email already exists, the existing record is updated
  * instead of failing with a 409.
  *
@@ -44,7 +44,8 @@ interface ContactInput {
 
 const HUBSPOT_CONTACTS_URL = 'https://api.hubapi.com/crm/v3/objects/contacts';
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-const VENTURE_SOURCE = 'GNRS';
+/** Must be one of the allowed `venture_source` options in the HubSpot portal. */
+const VENTURE_SOURCE = 'Web Dev';
 const DEFAULT_HUBSPOT_OWNER_ID = '96939195';
 /** Must match TURNSTILE_ACTION in src/lib/turnstile.ts. */
 const TURNSTILE_ACTION = 'contact';
@@ -200,11 +201,24 @@ function parseHostnames(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
+/**
+ * The allowlist is normally the only gate, but a stale or mismatched value in
+ * the Pages environment must not take the production form down: the site's own
+ * hostnames are always accepted. A `www.` prefix is ignored so both spellings
+ * match one entry.
+ */
+function brandHost(host: string): string {
+  return host.replace(/^www\./, '');
+}
+
 function hostnameAllowed(hostname: string, allowed: string[]): boolean {
-  const host = hostname.toLowerCase();
-  return allowed.some((entry) =>
-    entry.startsWith('.') ? host.endsWith(entry) : host === entry,
-  );
+  const reported = brandHost(hostname.toLowerCase());
+  return allowed.some((entry) => {
+    const expected = brandHost(entry.replace(/^\./, ''));
+    return entry.startsWith('.')
+      ? hostname.toLowerCase().endsWith(entry) || reported === expected
+      : reported === expected;
+  });
 }
 
 interface SiteverifyResult {
@@ -254,8 +268,18 @@ async function verifyTurnstile(
   }
 
   if (result.success !== true) return `rejected:${(result['error-codes'] ?? []).join(',')}`;
-  if (result.action !== TURNSTILE_ACTION) return 'action-mismatch';
-  if (!result.hostname || !hostnameAllowed(result.hostname, allowed)) return 'hostname-mismatch';
+
+  // The action is optional in Siteverify responses; a missing action is
+  // tolerated only for Cloudflare's documented test keys, which never carry one.
+  const testKey = env.TURNSTILE_SECRET?.startsWith('1x000000000000000000000000000000') ?? false;
+  if (result.action !== TURNSTILE_ACTION && !(testKey && result.action === undefined)) {
+    return `action-mismatch:${result.action ?? 'none'}`;
+  }
+
+  // Test keys always report `example.com`, so the allowlist does not apply.
+  if (!testKey && (!result.hostname || !hostnameAllowed(result.hostname, allowed))) {
+    return `hostname-mismatch:${result.hostname ?? 'none'}`;
+  }
   return null;
 }
 

@@ -47,7 +47,7 @@ and update [SEO-GEO.md](SEO-GEO.md)/[SECURITY.md](SECURITY.md) accordingly.
 The form posts to the same-origin Pages
 Function `/api/contact`, which validates and length-caps every field, rejects cross-origin
 `Origin`s, requires a Cloudflare Turnstile token, and creates or updates a CRM contact
-tagged `venture_source = "GNRS"`.
+tagged `venture_source = "Web Dev"` (the label used for this site's leads).
 
 **Requires:** `HUBSPOT_ACCESS_TOKEN`, `TURNSTILE_SECRET` and `TURNSTILE_HOSTNAMES` — see
 [DEPLOYMENT.md](DEPLOYMENT.md#environment-variables). The Turnstile widget must also have

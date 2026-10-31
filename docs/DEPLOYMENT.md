@@ -103,11 +103,16 @@ The Pages Function writes a CRM contact with these properties:
 | `email`, `firstname`, `lastname` | Full Name / Email fields |
 | `phone` | Phone field (optional) |
 | `message` | `Subject: <subject>` followed by the message body |
-| `venture_source` | Hardcoded `GNRS` (existing custom property) |
+| `venture_source` | Hardcoded `Web Dev` (allowed option of the existing custom property) |
 | `hubspot_owner_id` | `HUBSPOT_OWNER_ID` or `96939195` |
 
 Submitting an email that already exists updates the existing contact (`PATCH`)
 instead of creating a duplicate.
+
+`venture_source` is a dropdown property, so the value must be one of the options
+configured in the portal (`ScalePath`, `Agrivate`, `Buddystat`, `Menuvi`, `Web Dev`).
+HubSpot rejects the whole submission with `INVALID_OPTION` otherwise; the constant is
+`VENTURE_SOURCE` in [`functions/api/contact.ts`](../functions/api/contact.ts).
 
 Local development:
 
