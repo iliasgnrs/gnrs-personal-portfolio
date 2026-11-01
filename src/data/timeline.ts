@@ -8,19 +8,27 @@ export interface TimelineItem {
 
 export const timeline: TimelineItem[] = [
   {
-    role: 'Full-Stack Developer',
-    org: 'Uphostt — Cloud Hosting',
-    period: 'Owner',
+    role: 'Founder',
+    org: 'Scalepath.ee',
+    period: 'Founder',
     description:
-      'Leading development of cloud hosting platforms and headless web architectures.',
+      'European technology venture hub powering next-generation SaaS platforms, smart IoT ecosystems, and bespoke web developments.',
     type: 'work',
   },
   {
     role: 'Founder & Engineer',
     org: 'Agrivate — Smart Agriculture Solutions',
-    period: 'Owner',
+    period: 'Founder',
     description:
       'Pioneering IoT-driven smart agriculture solutions, IoT hardware and software solutions for the agri-tech sector.',
+    type: 'work',
+  },
+  {
+    role: 'Founder & Engineer',
+    org: 'Buddystat.com',
+    period: 'Founder',
+    description:
+      'Privacy-friendly analytics, SEO, geo and marketing analysis platform for modern websites.',
     type: 'work',
   },
   {
@@ -29,14 +37,6 @@ export const timeline: TimelineItem[] = [
     period: '2022 — Present',
     description:
       'Teaching robotics, programming, and engineering principles; mentoring FIRST® LEGO® League teams.',
-    type: 'work',
-  },
-  {
-    role: 'Owner',
-    org: 'Scalepath.ee',
-    period: 'Owner',
-    description:
-      'European technology venture hub powering next-generation SaaS platforms, smart IoT ecosystems, and bespoke web developments.',
     type: 'work',
   },
   {

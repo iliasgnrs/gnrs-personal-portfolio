@@ -147,6 +147,17 @@ log line.
 
 ---
 
+## 2026-11-01 — Experience timeline restructure
+
+- Reordered the timeline so the ventures lead: Scalepath.ee (Founder), Agrivate
+  (Founder & Engineer), then the new Buddystat.com card (Founder & Engineer — privacy-friendly
+  analytics, SEO, geo and marketing analysis).
+- Dropped the Uphostt card entirely; the remaining instructor, mentorship and education
+  entries are unchanged.
+- Deployed to production: https://gnrs.gr/ (Pages deployment `fd18127e`).
+
+---
+
 ## Verification snapshots
 
 | Check | Result |
